@@ -83,6 +83,56 @@ const router = createRouter({
       name: 'photo-edit',
       component: () => import('@/views/PhotoFormView.vue'),
     },
+
+    // ── Admin panel (requires authentication) ──────────────────────────
+    {
+      path: '/admin',
+      name: 'admin',
+      component: () => import('@/views/admin/AdminDashboard.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/admin/bands',
+      name: 'admin-bands',
+      component: () => import('@/views/admin/BandsAdminView.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/admin/venues',
+      name: 'admin-venues',
+      component: () => import('@/views/admin/VenuesAdminView.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/admin/concerts',
+      name: 'admin-concerts',
+      component: () => import('@/views/admin/ConcertsAdminView.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/admin/posts',
+      name: 'admin-posts',
+      component: () => import('@/views/admin/PostsAdminView.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/admin/categories',
+      name: 'admin-categories',
+      component: () => import('@/views/admin/CategoriesAdminView.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/admin/tags',
+      name: 'admin-tags',
+      component: () => import('@/views/admin/TagsAdminView.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/admin/photos',
+      name: 'admin-photos',
+      component: () => import('@/views/admin/PhotosAdminView.vue'),
+      meta: { requiresAuth: true },
+    },
   ],
 })
 
@@ -96,6 +146,10 @@ router.beforeEach((to) => {
       console.warn(`[router] Blocked suspicious param "${key}": ${raw}`)
       return { name: 'home' }
     }
+  }
+
+  if (to.meta.requiresAuth && !localStorage.getItem('auth_token')) {
+    return { name: 'login' }
   }
 })
 
