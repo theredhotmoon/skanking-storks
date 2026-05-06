@@ -6,6 +6,8 @@ import { useVenues } from '@/composables/useVenues'
 import { useConcerts } from '@/composables/useConcerts'
 import { useCategories } from '@/composables/useCategories'
 import { useTags } from '@/composables/useTags'
+import { useReleases } from '@/composables/useReleases'
+import { useTours } from '@/composables/useTours'
 import { useAuth } from '@/composables/useAuth'
 
 const { user } = useAuth()
@@ -14,9 +16,13 @@ const { query: venuesQ } = useVenues()
 const { query: concertsQ } = useConcerts()
 const { query: categoriesQ } = useCategories()
 const { query: tagsQ } = useTags()
+const { query: releasesQ } = useReleases()
+const { query: toursQ }    = useTours()
 
 const stats = computed(() => [
   { label: 'Bands', count: bandsQ.data.value?.length, link: '/admin/bands', color: '#818cf8' },
+  { label: 'Releases', count: releasesQ.data.value?.length, link: '/admin/releases', color: '#f472b6' },
+  { label: 'Tours',    count: toursQ.data.value?.length,   link: '/admin/tours',    color: '#fbbf24' },
   { label: 'Venues', count: venuesQ.data.value?.length, link: '/admin/venues', color: '#34d399' },
   { label: 'Concerts', count: concertsQ.data.value?.length, link: '/admin/concerts', color: '#fb923c' },
   { label: 'Categories', count: categoriesQ.data.value?.length, link: '/admin/categories', color: '#a78bfa' },
@@ -34,7 +40,7 @@ const stats = computed(() => [
         <p class="text-sm" style="color:#64748b;">BandMS Admin Panel — manage all your content below.</p>
       </div>
 
-      <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+      <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-7">
         <RouterLink
           v-for="s in stats"
           :key="s.label"
@@ -55,6 +61,8 @@ const stats = computed(() => [
           <RouterLink to="/admin/venues" class="quick-btn">+ Venue</RouterLink>
           <RouterLink to="/admin/concerts" class="quick-btn">+ Concert</RouterLink>
           <RouterLink to="/admin/posts" class="quick-btn">+ Post</RouterLink>
+          <RouterLink to="/admin/releases" class="quick-btn">+ Release</RouterLink>
+          <RouterLink to="/admin/tours" class="quick-btn">+ Tour</RouterLink>
           <RouterLink to="/admin/photos" class="quick-btn">+ Photo</RouterLink>
           <RouterLink to="/admin/categories" class="quick-btn">+ Category</RouterLink>
           <RouterLink to="/admin/tags" class="quick-btn">+ Tag</RouterLink>

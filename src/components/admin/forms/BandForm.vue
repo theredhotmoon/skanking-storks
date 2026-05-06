@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { reactive, watch } from 'vue'
+import RichEditor from '@/components/admin/RichEditor.vue'
 import type { Band, BandPayload } from '@/types/band'
 
 const props = defineProps<{
@@ -10,11 +11,20 @@ const props = defineProps<{
 
 const emit = defineEmits<{ submit: [BandPayload]; cancel: [] }>()
 
-const form = reactive<BandPayload>({ name: '' })
+const form = reactive<{ name: string; bio: string }>({ name: '', bio: '' })
 
-watch(() => props.initial, (val) => { form.name = val?.name ?? '' }, { immediate: true })
+watch(
+  () => props.initial,
+  (val) => {
+    form.name = val?.name ?? ''
+    form.bio  = val?.bio ?? ''
+  },
+  { immediate: true },
+)
 
-function submit() { emit('submit', { name: form.name }) }
+function submit() {
+  emit('submit', { name: form.name, bio: form.bio || null })
+}
 </script>
 
 <template>
@@ -23,6 +33,11 @@ function submit() { emit('submit', { name: form.name }) }
       <label class="field-label">Name <span style="color:#f87171;">*</span></label>
       <input v-model="form.name" required class="field-input" placeholder="Band name" />
       <p v-if="errors?.name" class="field-error">{{ errors.name[0] }}</p>
+    </div>
+    <div>
+      <label class="field-label">Bio</label>
+      <RichEditor v-model="form.bio" placeholder="Write the band's story…" />
+      <p v-if="errors?.bio" class="field-error">{{ errors.bio[0] }}</p>
     </div>
     <div class="flex gap-2 justify-end pt-1">
       <button type="button" @click="$emit('cancel')" class="btn-ghost">Cancel</button>
